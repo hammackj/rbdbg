@@ -1,0 +1,79 @@
+#!/usr/bin/env ruby -wKU
+# encoding: utf-8
+
+# rbdbg - rbdbg is a console debugger for Windows, primarily designed for automation.
+# Jacob Hammack <jacob.hammack@hammackj.com>
+# http://www.hammackj.com
+#
+#
+# hammackj - 01-04-2011 - Version 0.0.1
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '/../lib'))
+
+$stdout.sync = true
+$stderr.sync = true
+
+require 'rubygems'
+require 'rbdbg'
+
+module RbDbg
+	
+	# Rbdbg's Main application class
+	#
+	# @author Jacob Hammack
+	class Application
+		
+		# Creates a new instance of the Application Class
+		#
+		def initialize
+		end
+		
+		# Main Method of the Application class, handles command line arguments and starts the application
+		#
+		def main
+			Choice.options do
+				banner "#{APP_NAME} - v#{VERSION}" 
+				header 'Jacob Hammack'
+				header 'http://hammackj.com'
+				header 'Usage: #{APP_NAME} [OPTIONS]'
+				header ''
+
+				option :attach do
+					short '-a'
+					long '--attach PID'
+					desc 'Attaches the debugger to the specificed PID'
+				end
+				
+				option :processes do
+					short '-p'
+					long '--enumerate-processes'
+					desc 'Enumerates all of the processes that can be debugged'
+				end
+
+				separator ''
+				separator 'Other Options'
+
+				option :help do
+					short '-h'
+					long '--help'
+					desc 'Show this message'
+				end
+
+				option :version do
+					short '-v'
+					long '--version'
+					desc 'Show version'
+					action do
+						puts "#{APP_NAME} - v#{VERSION}"
+						exit
+					end
+				end
+	
+					footer ''
+			end
+		end
+	end
+end
+
+app = RbDbg::Application.new
+app.main
