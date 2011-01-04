@@ -41,7 +41,7 @@ module RbDbg
 				option :attach do
 					short '-a'
 					long '--attach PID'
-					desc 'Attaches the debugger to the specificed PID'
+					desc 'Attaches the debugger to the specified PID'
 				end
 				
 				option :processes do
