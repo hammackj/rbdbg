@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
 	s.version 							= RbDbg::VERSION
 	s.homepage 							= "http://www.hammackj.com/"
 	s.summary 							= "RbDbg"
-	s.description 					= "rbdbg is a debugger for Windows, Linux and OSX. Currently Under heavy development."
+	s.description 					= "rbdbg is a console debugger for Windows, primarily designed for automation."
 	
 	s.author 								= "Jacob Hammack"
 	s.email 								= "jacob.hammack@hammackj.com"
@@ -19,6 +19,11 @@ Gem::Specification.new do |s|
 	s.default_executable 		= 'rbdbg'
 	s.executables 					= ['rbdbg']
 	s.require_paths 				= ["lib"]
+	
+	s.required_rubygems_version = ">= 1.3.6"
+	s.rubyforge_project         = "rbdbg"
+	
+	s.add_development_dependency "rspec"
 	
 	s.has_rdoc 							= 'yard'
 	s.extra_rdoc_files 			= ["README.md", "LICENSE", "NEWS.md", "TODO.md"]
