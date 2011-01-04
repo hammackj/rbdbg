@@ -1,7 +1,9 @@
 rbdbg
 ===
 
-rbdbg is a debugger for Windows, Linux and OSX. Currently Under heavy development.
+rbdbg is a console debugger for Windows, primarily designed for automation. 
+
+*** Currently under heavy development. ***
 
 Requirements
 ---
