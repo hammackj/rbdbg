@@ -69,7 +69,7 @@ module RbDbg
 					end
 				end
 	
-					footer ''
+				footer ''
 			end
 		end
 	end
