@@ -1,7 +1,7 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby
 # encoding: utf-8
 
-# rbdbg - rbdbg is a console debugger for Windows, primarily designed for automation.
+# rbdbg - rbdbg is a console debugger for Windows/OSX/Linux, primarily designed for automation.
 # Jacob Hammack <jacob.hammack@hammackj.com>
 # http://www.hammackj.com
 #
@@ -31,46 +31,41 @@ module RbDbg
 		# Main Method of the Application class, handles command line arguments and starts the application
 		#
 		def main
-			Choice.options do
-				banner "#{APP_NAME} - v#{VERSION}" 
-				header 'Jacob Hammack'
-				header 'http://hammackj.com'
-				header 'Usage: #{APP_NAME} [OPTIONS]'
-				header ''
+			opts = OptionParser.new do |opt|
+				opt.banner =	"#{APP_NAME} v#{VERSION}\nJacob Hammack\nhttp://www.hammackj.com\n\n"
+				opt.banner << "Usage: #{APP_NAME} [options] "
+				opt.separator('')
 
-				option :attach do
-					short '-a'
-					long '--attach PID'
-					desc 'Attaches the debugger to the specified PID'
+				opt.on('-a', '--attach PID', "Attaches the debugger to the specified PID") do |option|
+					dbg = RbDbg::Debugger::OSX::OSXDebugger.new option
+					dbg.print_registers option
 				end
 				
-				option :processes do
-					short '-p'
-					long '--enumerate-processes'
-					desc 'Enumerates all of the processes that can be debugged'
+				opt.on('--enumerate-processes', "Enumerates all of the processes that can be debugged") do |option|
+					puts "Not Implemented yet"
 				end
 
-				separator ''
-				separator 'Other Options'
-
-				option :help do
-					short '-h'
-					long '--help'
-					desc 'Show this message'
+				opt.separator('')
+				opt.separator('Other Options')
+				
+				opt.on_tail('-v', '--version', "Shows application version information") do
+					puts "#{APP_NAME} - #{VERSION}"
+					exit
 				end
 
-				option :version do
-					short '-v'
-					long '--version'
-					desc 'Show version'
-					action do
-						puts "#{APP_NAME} - v#{VERSION}"
-						exit
-					end
+				opt.on_tail("-?", "--help", "Show this message") do
+					puts opt.to_s + "\n"
+					exit
 				end
-	
-				footer ''
 			end
+			
+			if ARGV.length != 0
+				opts.parse!
+			else
+				puts opts.to_s + "\n"
+				exit
+			end
+			
 		end
 	end
 end
