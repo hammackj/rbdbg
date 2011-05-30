@@ -7,8 +7,8 @@ module RbDbg
 
 			#
 			#
-			def initialize args
-		
+			def initialize (pid=0)
+				@pid = pid.to_i
 			end
 		
 			def attach
