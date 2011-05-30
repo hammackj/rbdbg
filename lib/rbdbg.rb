@@ -3,6 +3,8 @@ module RbDbg
 	VERSION = "0.0.1"
 end
 
-require 'choice'
+require 'optparse'
+require 'ffi'
 
-require 'rbdbg/debugger'
+require 'rbdbg/debugger/base'
+require 'rbdbg/debugger/osx'
