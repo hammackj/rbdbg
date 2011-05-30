@@ -38,7 +38,9 @@ module RbDbg
 
 				opt.on('-a', '--attach PID', "Attaches the debugger to the specified PID") do |option|
 					dbg = RbDbg::Debugger::OSX::OSXDebugger.new option
-					dbg.print_registers option
+					dbg.print_registers
+					
+					dbg.attach
 				end
 				
 				opt.on('--enumerate-processes', "Enumerates all of the processes that can be debugged") do |option|
