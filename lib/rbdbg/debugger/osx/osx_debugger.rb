@@ -2,19 +2,24 @@
 module RbDbg
 	module Debugger
 		module OSX
-			class OSXDebugger < Base
-			
-				def initilize
-				
-				end
-			
+			class OSXDebugger < Base	
 				def attach
+					
+					addr = 0
+					data = 0
+					result = Ptrace.ptrace(Ptrace::PT_ATTACH, @pid, addr, data)
+					
+					puts "result => #{result.inspect}"
+					puts "data => #{data.inspect}"
+					
+					Ptrace.ptrace(Ptrace::PT_DETACH, @pid, 0, 0)
+					
 				end
 			
-				def print_registers (pid)
+				def print_registers
 					target ||= Mach.mach_task_self
 					port = FFI::MemoryPointer.new :uint, 1
-					result = Mach.task_for_pid(target, pid.to_i, port)
+					result = Mach.task_for_pid(target, @pid, port)
 										
 					threads = FFI::MemoryPointer.new :pointer, 1
 					count = FFI::MemoryPointer.new :int, 1
