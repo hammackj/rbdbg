@@ -17,7 +17,14 @@ module RbDbg
 				end
 			
 				def print_registers
-					is_proc_64_bit?
+					bit = is_proc_64_bit?
+					
+					if !bit
+						puts "Process is 32 bit, Which is not support yet."
+						exit
+					end
+					
+					exit
 					
 					target ||= Mach.mach_task_self
 					port = FFI::MemoryPointer.new :uint, 1
@@ -58,34 +65,36 @@ module RbDbg
 					if SysCtl.sysctlnametomib("sysctl.proc_cputype", mib, miblen) != 0
 						return nil
 					end
-					
-					puts "miblen -> #{miblen.get_int(0)}"
-					
+										
 					tmp = mib.get_array_of_long(0, SysCtl::CTL_MAXNAME)				
 					tmp[miblen.get_long(0)] = @pid
 					
-					puts "tmp => #{tmp}"
-					
 					mib.write_array_of_long(tmp)
 					
-					puts "--\n#{mib.inspect}\n#{miblen + 1}\n#{cpu_type}\nlen => #{len.read_long}\n"
-					
-					res = SysCtl.sysctl(mib, miblen.get_long(0), cpu_type, len, nil, 0)
+					mlen = miblen.get_long(0) + 1
+										
+					res = SysCtl.sysctl(mib, mlen, cpu_type, len, nil, 0)
 					
 					if res == -1
 						puts "Error #{cpu_type.get_long(0)}"
 					end
 					
-					puts "#{cpu_type.get_long(0)}"
-					
-					case cpu_type.get_long(0)
+					cpu = cpu_type.get_int(0)
+
+					printf "0x%x\n", cpu				
+					printf "0x%x\n", Machine::CPU_TYPE_I386
+					printf "0x%x\n", Machine::CPU_TYPE_X86_64
+										
+					case cpu
+						when Machine::CPU_TYPE_I386
+							puts "32"
+							return false
 						when Machine::CPU_TYPE_X86_64
-							puts "64 bit" 
-						when Machine::CPU_TYPE_X86
-							puts "32 bit"
+							puts "64"
+							return true
+						else
+							return false
 					end
-					
-					exit
 				end
 			end
 		end
